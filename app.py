@@ -57,7 +57,7 @@ def index():
         try:
             cursor.execute(query)
             # Only show results for SELECT queries
-            if query.strip().lower().startswith("select"):
+            if query.strip().lower().startswith("select") | query.strip().lower().startswith("delete") | query.strip().lower().startswith("insert") | query.strip().lower().startswith("drop"):
                 results = cursor.fetchall()
                 columns = [description[0] for description in cursor.description]
             else:
