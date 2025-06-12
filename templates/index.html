@@ -8,8 +8,12 @@
 {% if error %}
   <p style="color:red;">Error: {{error}}</p>
 {% endif %}
+  {% if message %}
+  <p style="color:green;">{{ message }}</p>
+  {% endif %}
 {% if results %}
   <h2>Results:</h2>
+
   <table border=1>
     <tr>
       {% for col in columns %}
