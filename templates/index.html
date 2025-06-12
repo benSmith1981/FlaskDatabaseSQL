@@ -1,0 +1,27 @@
+<!doctype html>
+<title>SQL Practice Playground</title>
+<h1>Practice SQL Queries</h1>
+<form method=post>
+  <textarea name=query rows=4 cols=80 placeholder="Type your SQL SELECT statement here">{{query}}</textarea><br>
+  <input type=submit value="Run Query">
+</form>
+{% if error %}
+  <p style="color:red;">Error: {{error}}</p>
+{% endif %}
+{% if results %}
+  <h2>Results:</h2>
+  <table border=1>
+    <tr>
+      {% for col in columns %}
+        <th>{{col}}</th>
+      {% endfor %}
+    </tr>
+    {% for row in results %}
+      <tr>
+        {% for item in row %}
+          <td>{{item}}</td>
+        {% endfor %}
+      </tr>
+    {% endfor %}
+  </table>
+{% endif %}
