@@ -1,0 +1,29 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #f5f5f5;
+  margin: 30px;
+}
+nav {
+  background: #3572A5;
+  padding: 10px 15px;
+  border-radius: 6px;
+  margin-bottom: 30px;
+}
+nav a {
+  color: #fff;
+  text-decoration: none;
+  margin-right: 15px;
+  font-size: 1.08em;
+}
+nav a.active {
+  text-decoration: underline;
+}
+h1 {
+  color: #3572A5;
+}
+.container {
+  background: #fff;
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 2px 12px #bbb2;
+}

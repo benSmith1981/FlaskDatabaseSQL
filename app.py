@@ -52,6 +52,17 @@ def index():
     columns = []
     message = None  # For success messages
 
+    # Always get table data for display
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM Students")
+    students = cursor.fetchall()
+    student_columns = [description[0] for description in cursor.description]
+    cursor.execute("SELECT * FROM Grades")
+    grades = cursor.fetchall()
+    grade_columns = [description[0] for description in cursor.description]
+    conn.close()
+
     if request.method == 'POST':
         query = request.form['query']
         conn = get_connection()
@@ -88,7 +99,21 @@ def index():
         except Exception as e:
             error = str(e)
         conn.close()
-    return render_template('index.html', query=query, results=results, error=error, columns=columns, message=message)
+    return render_template(
+        'index.html',
+        query=query,
+        results=results,
+        error=error,
+        columns=columns,
+        message=message,
+        students=students,
+        student_columns=student_columns,
+        grades=grades,
+        grade_columns=grade_columns
+    )
+@app.route('/about')
+def about():
+    return render_template("about.html", active_page="about")
 
 if __name__ == '__main__':
     app.run(debug=True)

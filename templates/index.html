@@ -1,6 +1,41 @@
-<!doctype html>
-<title>SQL Practice Playground</title>
-<h1>Practice SQL Queries</h1>
+{% extends "base.html" %}
+{% block title %}Home - SQL Demo{% endblock %}
+{% block content %}
+  <h1>Welcome to the SQL Playground!</h1>
+  <p>This is the home page. Try navigating to About to see how navigation and CSS work in Flask.</p>
+
+  <h2>Students Table</h2>
+<table>
+  <tr>
+    {% for col in student_columns %}
+      <th>{{ col }}</th>
+    {% endfor %}
+  </tr>
+  {% for row in students %}
+  <tr>
+    {% for item in row %}
+      <td>{{ item }}</td>
+    {% endfor %}
+  </tr>
+  {% endfor %}
+</table>
+
+<h2>Grades Table</h2>
+<table>
+  <tr>
+    {% for col in grade_columns %}
+      <th>{{ col }}</th>
+    {% endfor %}
+  </tr>
+  {% for row in grades %}
+  <tr>
+    {% for item in row %}
+      <td>{{ item }}</td>
+    {% endfor %}
+  </tr>
+  {% endfor %}
+</table>
+
 <form method=post>
   <textarea name=query rows=4 cols=80 placeholder="Type your SQL SELECT statement here">{{query}}</textarea><br>
   <input type=submit value="Run Query">
@@ -17,7 +52,7 @@
   <table border=1>
     <tr>
       {% for col in columns %}
-        <th>{{col}}</th>
+        <th>{{col}}</thx>
       {% endfor %}
     </tr>
     {% for row in results %}
@@ -29,3 +64,4 @@
     {% endfor %}
   </table>
 {% endif %}
+{% endblock %}
