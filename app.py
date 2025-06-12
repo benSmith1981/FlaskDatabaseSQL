@@ -6,6 +6,8 @@ app = Flask(__name__)
 # Function to set up the database and return a connection
 def get_connection():
     conn = sqlite3.connect(':memory:')
+    # conn = sqlite3.connect('mydatabase.db')
+
     cursor = conn.cursor()
     # Create tables
     cursor.execute('''
