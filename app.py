@@ -9,7 +9,7 @@ def get_connection():
     # conn = sqlite3.connect('mydatabase.db')
 
     cursor = conn.cursor()
-    # Create tables
+    # Create tables for student and grades
     cursor.execute('''
         CREATE TABLE Students (
             id INTEGER PRIMARY KEY,
