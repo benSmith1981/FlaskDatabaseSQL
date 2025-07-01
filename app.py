@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 
 import sqlite3
 app = Flask(__name__)
+app.run(host="0.0.0.0", port=5000, debug=True)
 
 load_dotenv()  # Load variables from .env file
 # Function to set up the database and return a connection
