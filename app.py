@@ -7,6 +7,8 @@ import sqlite3
 app = Flask(__name__)
 print("Loading .env...")
 loaded = load_dotenv()
+os.getenv("DB_HOST")
+
 print("Loaded:", loaded)# Function to set up the database and return a connection
 def get_connection():
     # conn = sqlite3.connect(':memory:')
