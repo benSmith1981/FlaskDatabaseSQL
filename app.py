@@ -66,7 +66,7 @@ def index():
     error = None
     columns = []
     message = None  # For success messages
-
+    print("index")
     # Always get table data for display
     conn = get_connection()
     cursor = conn.cursor()
