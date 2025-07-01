@@ -12,6 +12,7 @@ def get_connection():
     # conn = sqlite3.connect(':memory:')
     # conn = sqlite3.connect('mydatabase.db')
     # Connect to the server without a database
+    print("conectin")
     conn = mysql.connector.connect(
         host=os.getenv("DB_HOST"),
         user=os.getenv("DB_USER"),
