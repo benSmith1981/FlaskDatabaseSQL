@@ -92,7 +92,7 @@ def index():
             statements = [s.strip() for s in query.strip().split(';') if s.strip()]
             last_stmt = statements[-1].lower() if statements else ""
             # Use executescript to run all statements
-            cursor.executescript(query)
+            cursor.execute(query)
             conn.commit()
             # If the last statement is SELECT, fetch results
             if last_stmt.startswith("select"):
