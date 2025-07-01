@@ -21,7 +21,7 @@ def get_connection():
     cursor = conn.cursor()
     cursor.execute("CREATE DATABASE IF NOT EXISTS flasksql")
 
-    # Create tables
+    # Create tables for student and grades
     cursor.execute('''
         CREATE TABLE Students (
             id INTEGER PRIMARY KEY,
