@@ -5,10 +5,9 @@ from dotenv import load_dotenv
 
 import sqlite3
 app = Flask(__name__)
-app.run(host="0.0.0.0", port=5000, debug=True)
-
-load_dotenv()  # Load variables from .env file
-# Function to set up the database and return a connection
+print("Loading .env...")
+loaded = load_dotenv()
+print("Loaded:", loaded)# Function to set up the database and return a connection
 def get_connection():
     # conn = sqlite3.connect(':memory:')
     # conn = sqlite3.connect('mydatabase.db')
@@ -20,6 +19,8 @@ def get_connection():
         password=os.getenv("DB_PASSWORD"),
         database=os.getenv("DB_NAME")
     )
+
+    
     cursor = conn.cursor()
     cursor.execute("CREATE DATABASE IF NOT EXISTS flasksql")
 
@@ -64,76 +65,80 @@ def get_connection():
     conn.commit()
     return conn
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
-    return "Index route is working!"
-# @app.route('/', methods=['GET', 'POST'])
-# def index():
-#     query = ""
-#     results = None
-#     error = None
-#     columns = []
-#     message = None  # For success messages
-#     print("index")
-#     # Always get table data for display
-#     conn = get_connection()
-#     cursor = conn.cursor()
-#     cursor.execute("SELECT * FROM Students")
-#     students = cursor.fetchall()
-#     student_columns = [description[0] for description in cursor.description]
-#     cursor.execute("SELECT * FROM Grades")
-#     grades = cursor.fetchall()
-#     grade_columns = [description[0] for description in cursor.description]
-#     conn.close()
+    query = ""
+    results = None
+    error = None
+    columns = []
+    message = None  # For success messages
+    print("index")
+    # Always get table data for display
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM Students")
+    students = cursor.fetchall()
+    student_columns = [description[0] for description in cursor.description]
+    cursor.execute("SELECT * FROM Grades")
+    grades = cursor.fetchall()
+    grade_columns = [description[0] for description in cursor.description]
+    conn.close()
 
-#     if request.method == 'POST':
-#         query = request.form['query']
-#         conn = get_connection()
-#         cursor = conn.cursor()
-#         try:
-#             # Split statements by semicolon
-#             statements = [s.strip() for s in query.strip().split(';') if s.strip()]
-#             last_stmt = statements[-1].lower() if statements else ""
-#             # Use executescript to run all statements
-#             cursor.executescript(query)
-#             conn.commit()
-#             # If the last statement is SELECT, fetch results
-#             if last_stmt.startswith("select"):
-#                 # Re-execute the last SELECT only (needed to get results)
-#                 cursor.execute(statements[-1])
-#                 results = cursor.fetchall()
-#                 columns = [description[0] for description in cursor.description]
-#                 message = "All statements executed. SELECT results below."
-#             elif last_stmt.startswith("delete"):
-#                 cursor.execute(query)
-#                 conn.commit()
-#                 message = f"Delete successful. {cursor.rowcount} row(s) deleted."
-#             elif last_stmt.startswith("insert"):
-#                 cursor.execute(query)
-#                 conn.commit()
-#                 message = f"Insert successful. {cursor.rowcount} row(s) inserted."
-#             elif last_stmt.startswith("drop"):
-#                 cursor.execute(query)
-#                 conn.commit()
-#                 message = f"Drop successful."
-#             else:
-#                 error = "Only SELECT, INSERT, DELETE, and DROP statements are supported."
+    if request.method == 'POST':
+        query = request.form['query']
+        conn = get_connection()
+        cursor = conn.cursor()
+        try:
+            # Split statements by semicolon
+            statements = [s.strip() for s in query.strip().split(';') if s.strip()]
+            last_stmt = statements[-1].lower() if statements else ""
+            # Use executescript to run all statements
+            cursor.executescript(query)
+            conn.commit()
+            # If the last statement is SELECT, fetch results
+            if last_stmt.startswith("select"):
+                # Re-execute the last SELECT only (needed to get results)
+                cursor.execute(statements[-1])
+                results = cursor.fetchall()
+                columns = [description[0] for description in cursor.description]
+                message = "All statements executed. SELECT results below."
+            elif last_stmt.startswith("delete"):
+                cursor.execute(query)
+                conn.commit()
+                message = f"Delete successful. {cursor.rowcount} row(s) deleted."
+            elif last_stmt.startswith("insert"):
+                cursor.execute(query)
+                conn.commit()
+                message = f"Insert successful. {cursor.rowcount} row(s) inserted."
+            elif last_stmt.startswith("drop"):
+                cursor.execute(query)
+                conn.commit()
+                message = f"Drop successful."
+            else:
+                error = "Only SELECT, INSERT, DELETE, and DROP statements are supported."
        
-#         except Exception as e:
-#             error = str(e)
-#         conn.close()
-#     return render_template(
-#         'index.html',
-#         query=query,
-#         results=results,
-#         error=error,
-#         columns=columns,
-#         message=message,
-#         students=students,
-#         student_columns=student_columns,
-#         grades=grades,
-#         grade_columns=grade_columns
-#     )
+        except Exception as e:
+            error = str(e)
+        conn.close()
+    return render_template(
+        'index.html',
+        query=query,
+        results=results,
+        error=error,
+        columns=columns,
+        message=message,
+        students=students,
+        student_columns=student_columns,
+        grades=grades,
+        grade_columns=grade_columns
+    )
 @app.route('/about')
 def about():
     return render_template("about.html", active_page="about")
+
+
+if __name__ == '__main__':
+    print("__main__")
+    app.run(debug=True)
+
+    # app.run(host="0.0.0.0", port=5000, debug=True)
