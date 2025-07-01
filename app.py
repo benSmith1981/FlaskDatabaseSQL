@@ -54,8 +54,10 @@ def get_connection():
         (5, 4, 'Maths', 'A'),
         (6, 4, 'English', 'A')
     ]
-    cursor.executemany('INSERT INTO Students VALUES (?, ?, ?)', students)
-    cursor.executemany('INSERT INTO Grades VALUES (?, ?, ?, ?)', grades)
+
+    cursor.executemany('INSERT INTO Students VALUES (%s, %s, %s)', students)
+    cursor.executemany('INSERT INTO Grades VALUES (%s, %s, %s, %s)', grades)
+
     conn.commit()
     return conn
 
