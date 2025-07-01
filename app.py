@@ -1,14 +1,26 @@
 from flask import Flask, request, render_template_string, render_template
+import mysql.connector
+import os
+from dotenv import load_dotenv
 
 import sqlite3
 app = Flask(__name__)
 
+load_dotenv()  # Load variables from .env file
 # Function to set up the database and return a connection
 def get_connection():
-    conn = sqlite3.connect(':memory:')
+    # conn = sqlite3.connect(':memory:')
     # conn = sqlite3.connect('mydatabase.db')
-
+    # Connect to the server without a database
+    conn = mysql.connector.connect(
+        host=os.getenv("DB_HOST"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASSWORD"),
+        database=os.getenv("DB_NAME")
+    )
     cursor = conn.cursor()
+    cursor.execute("CREATE DATABASE IF NOT EXISTS flasksql")
+
     # Create tables
     cursor.execute('''
         CREATE TABLE Students (
