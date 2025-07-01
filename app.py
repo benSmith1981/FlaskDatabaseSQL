@@ -63,73 +63,76 @@ def get_connection():
     conn.commit()
     return conn
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/')
 def index():
-    query = ""
-    results = None
-    error = None
-    columns = []
-    message = None  # For success messages
-    print("index")
-    # Always get table data for display
-    conn = get_connection()
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM Students")
-    students = cursor.fetchall()
-    student_columns = [description[0] for description in cursor.description]
-    cursor.execute("SELECT * FROM Grades")
-    grades = cursor.fetchall()
-    grade_columns = [description[0] for description in cursor.description]
-    conn.close()
+    return "Index route is working!"
+# @app.route('/', methods=['GET', 'POST'])
+# def index():
+#     query = ""
+#     results = None
+#     error = None
+#     columns = []
+#     message = None  # For success messages
+#     print("index")
+#     # Always get table data for display
+#     conn = get_connection()
+#     cursor = conn.cursor()
+#     cursor.execute("SELECT * FROM Students")
+#     students = cursor.fetchall()
+#     student_columns = [description[0] for description in cursor.description]
+#     cursor.execute("SELECT * FROM Grades")
+#     grades = cursor.fetchall()
+#     grade_columns = [description[0] for description in cursor.description]
+#     conn.close()
 
-    if request.method == 'POST':
-        query = request.form['query']
-        conn = get_connection()
-        cursor = conn.cursor()
-        try:
-            # Split statements by semicolon
-            statements = [s.strip() for s in query.strip().split(';') if s.strip()]
-            last_stmt = statements[-1].lower() if statements else ""
-            # Use executescript to run all statements
-            cursor.executescript(query)
-            conn.commit()
-            # If the last statement is SELECT, fetch results
-            if last_stmt.startswith("select"):
-                # Re-execute the last SELECT only (needed to get results)
-                cursor.execute(statements[-1])
-                results = cursor.fetchall()
-                columns = [description[0] for description in cursor.description]
-                message = "All statements executed. SELECT results below."
-            elif last_stmt.startswith("delete"):
-                cursor.execute(query)
-                conn.commit()
-                message = f"Delete successful. {cursor.rowcount} row(s) deleted."
-            elif last_stmt.startswith("insert"):
-                cursor.execute(query)
-                conn.commit()
-                message = f"Insert successful. {cursor.rowcount} row(s) inserted."
-            elif last_stmt.startswith("drop"):
-                cursor.execute(query)
-                conn.commit()
-                message = f"Drop successful."
-            else:
-                error = "Only SELECT, INSERT, DELETE, and DROP statements are supported."
+#     if request.method == 'POST':
+#         query = request.form['query']
+#         conn = get_connection()
+#         cursor = conn.cursor()
+#         try:
+#             # Split statements by semicolon
+#             statements = [s.strip() for s in query.strip().split(';') if s.strip()]
+#             last_stmt = statements[-1].lower() if statements else ""
+#             # Use executescript to run all statements
+#             cursor.executescript(query)
+#             conn.commit()
+#             # If the last statement is SELECT, fetch results
+#             if last_stmt.startswith("select"):
+#                 # Re-execute the last SELECT only (needed to get results)
+#                 cursor.execute(statements[-1])
+#                 results = cursor.fetchall()
+#                 columns = [description[0] for description in cursor.description]
+#                 message = "All statements executed. SELECT results below."
+#             elif last_stmt.startswith("delete"):
+#                 cursor.execute(query)
+#                 conn.commit()
+#                 message = f"Delete successful. {cursor.rowcount} row(s) deleted."
+#             elif last_stmt.startswith("insert"):
+#                 cursor.execute(query)
+#                 conn.commit()
+#                 message = f"Insert successful. {cursor.rowcount} row(s) inserted."
+#             elif last_stmt.startswith("drop"):
+#                 cursor.execute(query)
+#                 conn.commit()
+#                 message = f"Drop successful."
+#             else:
+#                 error = "Only SELECT, INSERT, DELETE, and DROP statements are supported."
        
-        except Exception as e:
-            error = str(e)
-        conn.close()
-    return render_template(
-        'index.html',
-        query=query,
-        results=results,
-        error=error,
-        columns=columns,
-        message=message,
-        students=students,
-        student_columns=student_columns,
-        grades=grades,
-        grade_columns=grade_columns
-    )
+#         except Exception as e:
+#             error = str(e)
+#         conn.close()
+#     return render_template(
+#         'index.html',
+#         query=query,
+#         results=results,
+#         error=error,
+#         columns=columns,
+#         message=message,
+#         students=students,
+#         student_columns=student_columns,
+#         grades=grades,
+#         grade_columns=grade_columns
+#     )
 @app.route('/about')
 def about():
     return render_template("about.html", active_page="about")
