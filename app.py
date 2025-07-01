@@ -131,4 +131,6 @@ def about():
     return render_template("about.html", active_page="about")
 
 if __name__ == '__main__':
+    print("__main__")
+
     app.run(debug=True)
