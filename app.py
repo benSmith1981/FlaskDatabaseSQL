@@ -24,14 +24,16 @@ def get_connection():
 
     # Create tables for student and grades
     cursor.execute('''
-        CREATE TABLE Students (
+        CREATE TABLE IF NOT EXISTS Students (
             id INTEGER PRIMARY KEY,
             name TEXT,
             age INTEGER
         )
     ''')
+
+
     cursor.execute('''
-        CREATE TABLE Grades (
+        CREATE TABLE IF NOT EXISTS Grades (
             id INTEGER PRIMARY KEY,
             student_id INTEGER,
             subject TEXT,
